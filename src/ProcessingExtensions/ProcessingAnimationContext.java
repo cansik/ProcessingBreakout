@@ -5,6 +5,7 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by cansik on 28/02/15.
@@ -23,13 +24,11 @@ public abstract class ProcessingAnimationContext extends PApplet {
     private ArrayList<ProcessingObject> animationObjects;
     private ArrayList<ProcessingObject> deadObjects;
 
-    public void setup()
-    {
+    public void setup() {
         //initial setup
         size(screenWidth, screenHeight, P3D);
         canvas = createGraphics(screenWidth, screenHeight, P3D);
 
-        background(0);
         smooth();
 
         animationObjects = new ArrayList<>();
@@ -41,19 +40,16 @@ public abstract class ProcessingAnimationContext extends PApplet {
 
     public void draw()
     {
-        canvas.beginDraw();
-        canvas.background(backgroundColor);
+        background(backgroundColor);
 
         //draw animationObjects
         for(ProcessingObject obj : animationObjects) {
             //maybe call logic outside of draw
             obj.logic(this);
-            obj.draw(canvas);
+            obj.draw(this);
         }
 
-        canvas.endDraw();
-        image(canvas, 0, 0);
-        server.sendImage(canvas);
+        sendImageToSyphon();
 
         //delete dead objects
         animationObjects.removeAll(deadObjects);
@@ -69,6 +65,15 @@ public abstract class ProcessingAnimationContext extends PApplet {
     public void removeAnimationObject(ProcessingObject obj)
     {
         deadObjects.add(obj);
+    }
+
+    private void sendImageToSyphon()
+    {
+        loadPixels();
+        canvas.loadPixels();
+        arrayCopy(pixels, canvas.pixels);
+        canvas.updatePixels();
+        server.sendImage(canvas);
     }
 
     //getter & setter

@@ -34,7 +34,7 @@ public class Star extends ProcessingObject {
     }
 
     @Override
-    public void draw(PGraphics g) {
+    public void draw(ProcessingAnimationContext g) {
        g.stroke(255, opacity);
        g.ellipse(x, y, size, size);
     }

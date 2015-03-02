@@ -15,5 +15,5 @@ public abstract class ProcessingObject {
 
     public abstract void logic(ProcessingAnimationContext context);
 
-    public abstract void draw(PGraphics g);
+    public abstract void draw(ProcessingAnimationContext g);
 }

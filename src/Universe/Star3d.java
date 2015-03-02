@@ -49,7 +49,7 @@ public class Star3d extends ProcessingObject {
     }
 
     @Override
-    public void draw(PGraphics g) {
+    public void draw(ProcessingAnimationContext g) {
         g.pushMatrix();
         g.translate(x, y, z);
         g.noFill();
