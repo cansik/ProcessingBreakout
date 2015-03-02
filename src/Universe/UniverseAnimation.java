@@ -10,19 +10,22 @@ import processing.core.PGraphics;
  */
 public class UniverseAnimation extends ProcessingAnimationContext {
 
-    //PeasyCam cam;
+    PeasyCam cam;
     float cameraX = 0;
 
     @Override
     public void setup()
     {
         super.setup();
-        //cam = new PeasyCam(this, 0, 0, 0, 50);
+        cam = new PeasyCam(this, 0, 0, 0, 1000);
+        cam.lookAt(width/2,height/2, 500);
 
+        /*
         for(int i = 0; i < 200; i ++)
         {
             addAnimationObject(new Star3d());
         }
+        */
     }
 
     @Override
@@ -30,8 +33,10 @@ public class UniverseAnimation extends ProcessingAnimationContext {
     {
         super.draw();
 
-        cameraX += 0.5;
+        if(random(1) > 0.9)
+            addAnimationObject(new Star3d());
 
-        getCanvas().camera(0, height / 2, (height / 2) / tan(PI / 6), cameraX, height / 2, 0, 0, 1, 0);
+        cam.rotateY(-0.001);
+        cameraX += 0.5;
     }
 }

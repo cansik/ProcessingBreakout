@@ -69,11 +69,7 @@ public abstract class ProcessingAnimationContext extends PApplet {
 
     private void sendImageToSyphon()
     {
-        loadPixels();
-        canvas.loadPixels();
-        arrayCopy(pixels, canvas.pixels);
-        canvas.updatePixels();
-        server.sendImage(canvas);
+         server.sendImage(g);
     }
 
     //getter & setter

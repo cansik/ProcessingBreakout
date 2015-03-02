@@ -28,7 +28,7 @@ public class Star3d extends ProcessingObject {
 
         x = context.random(context.width);
         y = context.random(context.height);
-        z = context.random(100, -1000);
+        z = context.random(0, 2000);
     }
 
     @Override
@@ -54,6 +54,7 @@ public class Star3d extends ProcessingObject {
         g.translate(x, y, z);
         g.noFill();
         g.stroke(r, green, b);
+        //g.fill(r, green, b);
         //g.sphere(size);
         g.box(size);
         g.popMatrix();
