@@ -10,5 +10,6 @@
     <orderEntry type="library" name="Processing" level="application" />
     <orderEntry type="library" name="Syphon" level="application" />
     <orderEntry type="library" name="openGL" level="application" />
+    <orderEntry type="library" name="peasycam" level="application" />
   </component>
 </module>

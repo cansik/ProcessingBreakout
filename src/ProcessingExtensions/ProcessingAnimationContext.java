@@ -21,6 +21,7 @@ public abstract class ProcessingAnimationContext extends PApplet {
     private int backgroundColor = 0x000000;
 
     private ArrayList<ProcessingObject> animationObjects;
+    private ArrayList<ProcessingObject> deadObjects;
 
     public void setup()
     {
@@ -32,6 +33,7 @@ public abstract class ProcessingAnimationContext extends PApplet {
         smooth();
 
         animationObjects = new ArrayList<>();
+        deadObjects = new ArrayList<>();
 
         //setup syphon server
         server = new SyphonServer(this, "PRC_" + name);
@@ -50,16 +52,23 @@ public abstract class ProcessingAnimationContext extends PApplet {
         }
 
         canvas.endDraw();
-
         image(canvas, 0, 0);
-
         server.sendImage(canvas);
+
+        //delete dead objects
+        animationObjects.removeAll(deadObjects);
+        deadObjects.clear();
     }
 
     public void addAnimationObject(ProcessingObject obj)
     {
         obj.setup(this);
         animationObjects.add(obj);
+    }
+
+    public void removeAnimationObject(ProcessingObject obj)
+    {
+        deadObjects.add(obj);
     }
 
     //getter & setter
