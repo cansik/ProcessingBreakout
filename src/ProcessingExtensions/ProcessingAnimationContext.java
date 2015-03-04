@@ -11,8 +11,8 @@ import java.util.Arrays;
  * Created by cansik on 28/02/15.
  */
 public abstract class ProcessingAnimationContext extends PApplet {
-    private int screenWidth = 500;
-    private int screenHeight = 500;
+    private int screenWidth = 800;
+    private int screenHeight = 800;
 
     private SyphonServer server;
     private PGraphics canvas;
@@ -35,7 +35,7 @@ public abstract class ProcessingAnimationContext extends PApplet {
         deadObjects = new ArrayList<>();
 
         //setup syphon server
-        server = new SyphonServer(this, "PRC_" + name);
+        //server = new SyphonServer(this, "PRC_" + name);
     }
 
     public void draw()
@@ -49,7 +49,7 @@ public abstract class ProcessingAnimationContext extends PApplet {
             obj.draw(this);
         }
 
-        sendImageToSyphon();
+        //sendImageToSyphon();
 
         //delete dead objects
         animationObjects.removeAll(deadObjects);
@@ -95,6 +95,10 @@ public abstract class ProcessingAnimationContext extends PApplet {
 
     public PGraphics getCanvas() {
         return canvas;
+    }
+
+    public ArrayList<ProcessingObject> getAnimationObjects() {
+        return animationObjects;
     }
 
     @Override

@@ -25,7 +25,6 @@ public class StrokesAnimation extends ProcessingAnimationContext {
     }
 
     public void draw() {
-
         r += dr;
         g += dg;
         b += db;

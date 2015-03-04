@@ -2,7 +2,6 @@ package Universe;
 
 import ProcessingExtensions.ProcessingAnimationContext;
 import ProcessingExtensions.ProcessingObject;
-import processing.core.PGraphics;
 
 /**
  * Created by cansik on 26/02/15.
@@ -12,12 +11,21 @@ public class Star3d extends ProcessingObject {
     float speed;
     float size;
     float opacity;
-    float z;
+    float fieldSize;
 
-    int r = 250, green = 50, b = 100;
-    int dr = 1, dg = 1, db = 1;
+    float initx, inity, initz, initr;
 
-    public Star3d(){
+    float theta;
+    float roh;
+    float r;
+
+    float red, green, b;
+
+    public boolean fall;
+
+
+    public Star3d(float fieldSize){
+        this.fieldSize = fieldSize;
     }
 
     @Override
@@ -26,37 +34,78 @@ public class Star3d extends ProcessingObject {
         size = context.random(1, 10);
         opacity = context.random(1);
 
-        x = context.random(context.width);
-        y = context.random(context.height);
-        z = context.random(0, 2000);
+        /*
+        x = context.random(fieldSize);
+        y = context.random(fieldSize);
+        z = context.random(fieldSize);
+        */
+
+        r = fieldSize; //context.random(fieldSize);
+        x = context.random(-1 * r, r);
+        y = context.random(-1 * r, r);
+        z = (float)Math.sqrt(Math.pow(r, 2D) -  (Math.pow(x, 2D) + Math.pow(y, 2D)));
+
+        if((int)x%2 == 0)
+        {
+            z *= -1;
+            green = 255;
+            red = 100;
+        }
+        else
+        {
+            red = 255;
+            b = 100;
+        }
+
+        initx = x;
+        inity = y;
+        initz = z;
+        initr = r;
+
+        theta = (float)Math.asin(z / r);
+        roh = (float)Math.atan2(y, x);
     }
 
     @Override
     public void logic(ProcessingAnimationContext context)
     {
-        r += dr;
-        green += dg;
-        b += db;
 
-        if(r >= 255 || r <= 0)
-            dr *= -1;
-
-        if(green > 255 || green <= 0)
-            dg *= -1;
-
-        if(b > 255 || b <= 0)
-            db *= -1;
     }
 
     @Override
     public void draw(ProcessingAnimationContext g) {
+        if(fall)
+        {
+            if(Math.abs(r)  <= initr) {
+                r -= g.random(0, 20);
+
+                x = (float) (r * Math.cos(theta) * Math.cos(roh));
+                y = (float) (r * Math.cos(theta) * Math.sin(roh));
+                z = (float) (r * Math.sin(theta));
+            }
+        }
+
         g.pushMatrix();
         g.translate(x, y, z);
+
+
         g.noFill();
-        g.stroke(r, green, b);
-        //g.fill(r, green, b);
+        //g.stroke(red, green, b);
+        //g.fill(red, green, b);
+
+        if(g.random(1000) > 500) {
+            g.stroke(0, 255, 0);
+            g.fill(0, 255, 0);
+        }
+        else
+        {
+            g.stroke(255);
+            g.fill(255);
+        }
+
         //g.sphere(size);
         g.box(size);
+
         g.popMatrix();
     }
 }
