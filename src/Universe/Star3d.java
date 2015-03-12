@@ -57,6 +57,7 @@ public class Star3d extends ProcessingObject {
             b = 100;
         }
 
+
         initx = x;
         inity = y;
         initz = z;
@@ -102,6 +103,9 @@ public class Star3d extends ProcessingObject {
             g.stroke(255);
             g.fill(255);
         }
+
+        g.fill(0);
+        g.stroke(0);
 
         //g.sphere(size);
         g.box(size);

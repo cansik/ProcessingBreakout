@@ -34,14 +34,14 @@ public abstract class ProcessingAnimationContext extends PApplet {
         animationObjects = new ArrayList<>();
         deadObjects = new ArrayList<>();
 
+        background(backgroundColor);
+
         //setup syphon server
-        //server = new SyphonServer(this, "PRC_" + name);
+        server = new SyphonServer(this, "PRC_" + name);
     }
 
     public void draw()
     {
-        background(backgroundColor);
-
         //draw animationObjects
         for(ProcessingObject obj : animationObjects) {
             //maybe call logic outside of draw
@@ -49,7 +49,7 @@ public abstract class ProcessingAnimationContext extends PApplet {
             obj.draw(this);
         }
 
-        //sendImageToSyphon();
+        sendImageToSyphon();
 
         //delete dead objects
         animationObjects.removeAll(deadObjects);

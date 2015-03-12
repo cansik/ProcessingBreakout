@@ -52,7 +52,7 @@ public class UniverseAnimation extends ProcessingAnimationContext {
         cam.lookAt(0, 0, 0);
         //cam.rotateX(-0.0001);;
 
-
+        /*
         Iterator<ProcessingObject> it = getAnimationObjects().iterator();
         stroke(0, 255, 0);
         strokeWeight(1f);
@@ -68,11 +68,11 @@ public class UniverseAnimation extends ProcessingAnimationContext {
                 prev = current;
             }
         }
-        
+        */
 
 
 
-        /*
+
         stroke(255, 0, 100);
         for(ProcessingObject obj : getAnimationObjects()) {
             Star3d star = (Star3d) obj;
@@ -82,7 +82,7 @@ public class UniverseAnimation extends ProcessingAnimationContext {
             if(random(1000) > 999)
                 line(star.getX(), star.getY(), star.getZ(), star2.getX(), star2.getY(), star2.getZ());
         }
-        */
+
 
 
         /*

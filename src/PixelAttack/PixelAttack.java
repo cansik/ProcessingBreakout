@@ -27,7 +27,7 @@ public class PixelAttack extends ProcessingAnimationContext {
 
     @Override
     public void draw() {
-
+        super.draw();
         clear();
 
         //helper grid
