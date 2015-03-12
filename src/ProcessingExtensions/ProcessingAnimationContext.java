@@ -11,8 +11,8 @@ import java.util.Arrays;
  * Created by cansik on 28/02/15.
  */
 public abstract class ProcessingAnimationContext extends PApplet {
-    private int screenWidth = 800;
-    private int screenHeight = 800;
+    private int screenWidth = 600;
+    private int screenHeight = 600;
 
     private SyphonServer server;
     private PGraphics canvas;
