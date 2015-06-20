@@ -21,6 +21,8 @@ public abstract class ProcessingAnimationContext extends PApplet {
 
     private int backgroundColor = 0x000000;
 
+    private boolean clearScreen = false;
+
     private ArrayList<ProcessingObject> animationObjects;
     private ArrayList<ProcessingObject> deadObjects;
 
@@ -42,11 +44,14 @@ public abstract class ProcessingAnimationContext extends PApplet {
 
     public void draw()
     {
+        if(clearScreen)
+            clear();
+
         //draw animationObjects
         for(ProcessingObject obj : animationObjects) {
             //maybe call logic outside of draw
-            obj.logic(this);
             obj.draw(this);
+            obj.logic(this);
         }
 
         sendImageToSyphon();
@@ -99,6 +104,14 @@ public abstract class ProcessingAnimationContext extends PApplet {
 
     public ArrayList<ProcessingObject> getAnimationObjects() {
         return animationObjects;
+    }
+
+    public boolean isClearScreen() {
+        return clearScreen;
+    }
+
+    public void setClearScreen(boolean clearScreen) {
+        this.clearScreen = clearScreen;
     }
 
     @Override

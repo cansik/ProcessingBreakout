@@ -14,7 +14,7 @@ public class PixelAttack extends ProcessingAnimationContext {
     float centerY;
 
     float pixelCount = 20;
-    float pixelDirection = 1.2f;
+    float pixelDirection = 0.3f;
 
     @Override
     public void setup() {
