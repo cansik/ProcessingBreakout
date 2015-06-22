@@ -6,7 +6,8 @@ import processing.core.PApplet;
  */
 public class Main {
     static public void main(String args[]) {
-        PApplet.main(new String[]{"SchwarmTest.SchwarmTest"});
+        PApplet.main(new String[]{"Planar.Planar2"});
+        //PApplet.main(new String[]{"SchwarmTest.SchwarmTest"});
         //PApplet.main(new String[]{"LightAttack.LightAttack"});
         //PApplet.main(new String[]{"MusikSehen.MusikSehen"});
         //PApplet.main(new String[]{"DirtyMonitor.DirtyMonitor"});

@@ -63,8 +63,9 @@ public class SchwarmTest extends ProcessingAnimationContext {
     @Override
     public void draw() {
         super.draw();
-        logic();
         background(0);
+
+        logic();
 
         boids.stream().forEach(b -> b.draw(this));
 
@@ -83,7 +84,7 @@ public class SchwarmTest extends ProcessingAnimationContext {
 
         if(key == ' ')
         {
-            setup();
+            boids.stream().forEach(b -> b.setup(this));
         }
 
         if(key == 'r')
@@ -91,5 +92,17 @@ public class SchwarmTest extends ProcessingAnimationContext {
             println("recording...");
             recording = true;
         }
+    }
+
+    void initBoids()
+    {
+        boids = new ArrayList<>();
+
+        //add boids
+        for(int i = 0; i < FOX_AMOUNT; i++)
+            boids.add(new Fox());
+
+        //finally setup all boids
+        boids.stream().forEach(b -> b.setup(this));
     }
 }

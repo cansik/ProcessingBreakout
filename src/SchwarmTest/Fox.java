@@ -13,7 +13,7 @@ class Fox extends BaseBoid
     private final float DESIRED_SEPARATION = 25f;
     private final float NEIGHBOUR_RADIUS = 50f;
     private final float MAX_FORCE = 0.5f;
-    private final float MAX_SPEED = 5f;
+    private final float MAX_SPEED = 2f;
 
     //size
     float r = 1.0f;
@@ -80,6 +80,24 @@ class Fox extends BaseBoid
 
         //check for borders
         borders();
+
+        //ugly drawin
+        drawLinesWithNeighbours(boids);
+    }
+
+
+    private void drawLinesWithNeighbours(List<BaseBoid> boids)
+    {
+        ProcessingAnimationContext g = context;
+        List<Tuple<BaseBoid, Float>> neighbours = getNearBoids(boids, NEIGHBOUR_RADIUS);
+
+        neighbours.stream().forEach(n -> {
+            BaseBoid b = n.getFirst();
+            //g.stroke(255, 255, 200, 100);
+            g.stroke(255 * (n.getSecond() / NEIGHBOUR_RADIUS));
+            g.strokeWeight(1 * (n.getSecond() / NEIGHBOUR_RADIUS));
+            g.line(location.x, location.y, b.location.x, b.location.y);
+        });
     }
 
     private void applyForce(PVector force)
