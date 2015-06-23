@@ -85,15 +85,24 @@ public class VertexPoint {
 
     private PVector cohesionFromCenter()
     {
-        float dist = center.dist(location);
+        float dist2d = center.dist(new PVector(location.x, location.y));
+        float dist3d = center.dist(location);
         PVector speed = new PVector();
 
         //dist > 80% of max
         float innerRadius = (MAX_RADIUS * 0.8f);
-        if(dist > innerRadius)
+
+        if(dist2d > innerRadius)
         {
             //calculate anti-force
-            speed.add(steerTo(center));
+            PVector t2d = steerTo(center);
+            speed.add(new PVector(t2d.x, t2d.y));
+        }
+
+        if(dist3d > MAX_DEPTH)
+        {
+            PVector t3d = steerTo(center);
+            speed.add(new PVector(0, 0, t3d.z));
         }
 
         return speed;

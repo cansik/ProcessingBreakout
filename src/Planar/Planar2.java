@@ -16,7 +16,7 @@ public class Planar2 extends ProcessingAnimationContext {
 
     final int PLANAR_LENGTH = 100;
 
-    final float MAX_RADIUS = 40f;
+    final float MAX_RADIUS = 30f;
     final float MAX_DEPTH = 200f;
     final float MAX_SPEED = 2f;
     final float MAX_FORCE = 0.5f;
@@ -137,7 +137,7 @@ public class Planar2 extends ProcessingAnimationContext {
         if(RENDE_TRIANGLES) {
             //draw shape
             noStroke();
-            fill(200, 200);
+            fill(200, 255);
 
             for (int x = 0; x < points.length - 1; x++) {
                 for (int y = 0; y < points[x].length - 1; y++) {
