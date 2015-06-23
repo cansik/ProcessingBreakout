@@ -9,17 +9,26 @@ import processing.core.PVector;
  * Created by cansik on 22/06/15.
  */
 public class Planar2 extends ProcessingAnimationContext {
-    final int ROW_COUNT = 30;
-    final int COLUMN_COUNT = 30;
+    final int ROW_COUNT = 20;
+    final int COLUMN_COUNT = 13;
 
-    final int BOX_SIZE = 10;
+    final int BOX_SIZE = 50;
 
-    final int QUAD_SIZE = 50;
+    final int PLANAR_LENGTH = 100;
+
+    final float MAX_RADIUS = 40f;
+    final float MAX_DEPTH = 200f;
+    final float MAX_SPEED = 2f;
+    final float MAX_FORCE = 0.5f;
+
+    final boolean RENDER_POINTS = false;
+    final boolean RENDER_SHAPES = false;
+    final boolean RENDE_TRIANGLES = true;
 
     LeapMotion leap;
     PeasyCam cam;
 
-    PVector[][] points;
+    VertexPoint[][] points;
 
     boolean recording = false;
 
@@ -41,10 +50,17 @@ public class Planar2 extends ProcessingAnimationContext {
 
         setName("Planar");
 
-        cam = new PeasyCam(this, 0, 0, 0, 1000);
-        cam.lookAt(500,500, 0);
+        cam = new PeasyCam(this, 0, 0, 0, 800);
+        cam.lookAt(0, 0, 0);
+        cam.setActive(false);
 
-        points = new PVector[ROW_COUNT][COLUMN_COUNT];
+        points = new VertexPoint[ROW_COUNT][COLUMN_COUNT];
+
+        float widthSectorSize = width / ROW_COUNT;
+        float heightSectorSize = height / COLUMN_COUNT;
+
+        float startX = -(ROW_COUNT * PLANAR_LENGTH) / 2;
+        float startY = -(COLUMN_COUNT * PLANAR_LENGTH) / 2;
 
         //create grid
         for(int x = 0; x < points.length; x++)
@@ -53,18 +69,23 @@ public class Planar2 extends ProcessingAnimationContext {
             {
                 PVector point = new PVector();
 
-                point.x = x * QUAD_SIZE;
-                point.y = y * QUAD_SIZE;
-                point.z = random(QUAD_SIZE);
+                point.x = x * PLANAR_LENGTH + startX;
+                point.y = y * PLANAR_LENGTH + startY;
+                point.z = 0; //random(PLANAR_LENGTH);
 
-                points[x][y] = point;
+                points[x][y] = new VertexPoint(this, point, MAX_RADIUS, MAX_SPEED, MAX_FORCE, MAX_DEPTH);
             }
         }
     }
 
     void logic()
     {
-
+        for(int x = 0; x < points.length; x++)
+        {
+            for(int y = 0; y < points[x].length; y++) {
+                points[x][y].nextStep();
+            }
+        }
     }
 
     @Override
@@ -73,40 +94,78 @@ public class Planar2 extends ProcessingAnimationContext {
         logic();
         lights();
 
-        /*
-        for(int x = 0; x < points.length; x++)
+        if(RENDER_POINTS)
         {
-            for(int y = 0; y < points[x].length; y++) {
-                PVector p = points[x][y];
+            for(int x = 0; x < points.length; x++)
+            {
+                for(int y = 0; y < points[x].length; y++) {
+                    PVector p = points[x][y].location;
 
-                pushMatrix();
-                translate(p.x, p.y, p.z);
-                fill(255);
-                box(BOX_SIZE, BOX_SIZE, BOX_SIZE);
+                    pushMatrix();
+                    translate(p.x, p.y, p.z);
+                    fill(255);
+                    box(BOX_SIZE, BOX_SIZE, BOX_SIZE);
 
-                popMatrix();
-            }
-        }
-        */
-
-        //draw shape
-        for(int x = 0; x < points.length - 1; x++) {
-            for (int y = 0; y < points[x].length - 1; y++) {
-                PVector p1 =  points[x][y];
-                PVector p2 =  points[x][y+1];
-                PVector p3 =  points[x+1][y+1];
-                PVector p4 =  points[x+1][y];
-
-                beginShape();
-                vertex(p1.x, p1.y, p1.z);
-                vertex(p2.x, p2.y, p2.z);
-                vertex(p3.x, p3.y, p3.z);
-                vertex(p4.x, p4.y, p4.z);
-                endShape();
+                    popMatrix();
+                }
             }
         }
 
-        ambient(200);
+
+        if(RENDER_SHAPES) {
+            //draw shape
+            noStroke();
+            fill(200, 200);
+
+            for (int x = 0; x < points.length - 1; x++) {
+                for (int y = 0; y < points[x].length - 1; y++) {
+                    PVector p1 = points[x][y].location;
+                    PVector p2 = points[x][y + 1].location;
+                    PVector p3 = points[x + 1][y + 1].location;
+                    PVector p4 = points[x + 1][y].location;
+
+                    beginShape();
+                    vertex(p1.x, p1.y, p1.z);
+                    vertex(p2.x, p2.y, p2.z);
+                    vertex(p3.x, p3.y, p3.z);
+                    vertex(p4.x, p4.y, p4.z);
+                    endShape();
+                }
+            }
+        }
+
+        if(RENDE_TRIANGLES) {
+            //draw shape
+            noStroke();
+            fill(200, 200);
+
+            for (int x = 0; x < points.length - 1; x++) {
+                for (int y = 0; y < points[x].length - 1; y++) {
+                    PVector p1 = points[x][y].location;
+                    PVector p2 = points[x][y + 1].location;
+                    PVector p3 = points[x + 1][y + 1].location;
+                    PVector p4 = points[x + 1][y].location;
+
+                    //triangle one
+                    beginShape();
+                    vertex(p1.x, p1.y, p1.z);
+                    vertex(p2.x, p2.y, p2.z);
+                    vertex(p4.x, p4.y, p4.z);
+                    endShape();
+
+                    //triangle two
+                    beginShape();
+                    vertex(p2.x, p2.y, p2.z);
+                    vertex(p4.x, p4.y, p4.z);
+                    vertex(p3.x, p3.y, p3.z);
+                    endShape();
+                }
+            }
+        }
+
+        ambient(255);
+        //ambientLight(0, 0, 200, 0, -1000, 20);
+        //directionalLight(0, 0, 255, 0, 0, 20);
 
         if (recording) {
             saveFrame("/Users/cansik/Projects/ProcessingTest/output/frames####.png");
@@ -120,6 +179,11 @@ public class Planar2 extends ProcessingAnimationContext {
         if (key == 's' ) {
             println( "finishing movie" );
             recording = false;
+        }
+
+        if(key == 'c')
+        {
+            cam.setActive(!cam.isActive());
         }
 
         if(key == ' ')
